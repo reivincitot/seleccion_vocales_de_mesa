@@ -12,10 +12,13 @@ class Votantes(models.Model):
     sexo = models.CharField(max_length=1)
     ha_sido_vocal = models.BooleanField(default=False)
     ultimo_ano_de_vocal = models.DateField(blank=True, null=True)
+    latitud = models.DecimalField(max_digits=9, decimal_places=6)
+    longitud = models.DecimalField(max_digits=9, decimal_places=6)
+    presenta_discapacidad = models.BooleanField()
 
     def clean(self):
         # Verificar si ha_salido_vocal es True y fecha_seleccion está vacio
-        if self.ha_sido_vocal and not self.fecha_seleccion:
+        if self.ha_sido_vocal and not self.ultimo_ano_de_vocal:
             raise ValidationError(
                 "Fecha de selección es obligatoria para votantes que han sido vocales."
             )
@@ -30,6 +33,8 @@ class LocalDeVotacion(models.Model):
     direccion = models.CharField(255)
     excepcion = models.BooleanField(default=False)
     motivo_exepcion = models.CharField(blank=True, null=True)
+    latitud = models.DecimalField(max_digits=9, decimal_places=6)
+    longitud = models.DecimalField(max_digits=9,decimal_places=6)
 
     def clean(self):
         # Verificar si hay excepción pero no se ha proporcionado el motivo
